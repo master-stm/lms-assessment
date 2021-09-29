@@ -72,7 +72,7 @@
 
 <script>
 import BookInfoModal from "../components/BookInfoModal.vue";
-import { getAllData } from "../functions/fetchers";
+import { getAllData, addBook } from "../functions/fetchers";
 export default {
   name: "General Store",
   components: { BookInfoModal },
@@ -89,6 +89,7 @@ export default {
   },
   methods: {
     getAllData,
+    addBook,
     moreClick(book) {
       this.showMoreDialog = true;
       this.bookToImport = book;
@@ -97,26 +98,17 @@ export default {
       this.showImportDialog = true;
       this.bookToImport = book;
     },
-    handelImport() {
+    async handelImport() {
       this.bookToImport.quantity = this.quantity;
       this.bookToImport.rented = "no";
 
-      fetch("http://localhost:5000/add_book", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.bookToImport),
-      })
-        .then(() => {
-          this.$q.notify({
-            message: `Book ID: ${this.bookToImport.bookID} imported`,
-            position: "center",
-            color: "primary",
-          });
-          this.bookToImport = {};
-        })
-        .catch((err) => console.error(err));
+      await this.addBook("http://localhost:5000/add_book", this.bookToImport);
+
+      this.$q.notify({
+        message: `Book ID: ${this.bookToImport.bookID} imported`,
+        position: "center",
+        color: "primary",
+      });
     },
     navigatePrev() {
       this.startIndex = this.startIndex - 5;

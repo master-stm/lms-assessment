@@ -35,6 +35,7 @@
 
 <script>
 import BookInfoModal from "../components/BookInfoModal.vue";
+import { getAllData } from "../functions/fetchers";
 export default {
   name: "Local Store",
   components: { BookInfoModal },
@@ -47,10 +48,9 @@ export default {
     };
   },
   methods: {
-    getBook() {
-      fetch(this.serverURL + "get_books")
-        .then((res) => res.json())
-        .then((data) => (this.booksArray = data));
+    getAllData,
+    async getBook() {
+      this.booksArray = await this.getAllData(this.serverURL + "get_books");
     },
     moreClick(book) {
       this.book = book;

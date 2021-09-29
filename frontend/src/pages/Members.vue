@@ -24,7 +24,6 @@
             label="Create Membership"
           />
         </q-fab>
-        <q-btn color="primary" icon="check" label="OK" @click="logger" />
       </div>
     </div>
     <q-dialog v-model="createMemberModal" persistent>
@@ -155,7 +154,6 @@ export default {
     };
   },
   methods: {
-    logger,
     handleSearch() {
       fetch(this.serverURL + "get_member/" + this.queryID)
         .then((res) => res.json())
