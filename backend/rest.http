@@ -1,0 +1,100 @@
+@url = http://127.0.0.1:5000/
+
+
+# articles apis
+
+###
+GET {{url}}get
+
+###
+GET {{url}}get/1/
+
+###
+
+POST {{url}}add
+content-type: application/json
+
+{
+    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+    "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+    
+}
+
+###
+PUT {{url}}update/3/
+content-type: application/json
+
+{
+    "title": "updated title",
+    "body": "updated body"
+    
+}
+
+###
+DELETE {{url}}delete/4/
+
+# books apis
+
+###
+POST {{url}}add_book
+Content-Type: application/json
+
+{
+    
+      "bookID": "8598",
+      "title": "Eats  Shoots & Leaves: Why  Commas Really Do Make a Difference!",
+      "authors": "Lynne Truss/Bonnie Timmons",
+      "average_rating": "4.15",
+      "isbn": "0399244913",
+      "isbn13": "9780399244919",
+      "language_code": "eng",
+      "  num_pages": "32",
+      "ratings_count": "1371",
+      "text_reviews_count": "205",
+      "publication_date": "7/25/2006",
+      "publisher": "G.P. Putnam's Sons Books for Young Readers",
+      "quantity":"30"
+    }
+
+###
+
+GET {{url}}get_books
+
+###
+
+PUT {{url}}update_book/2543
+content-type: application/json
+
+{
+     "authors": "Jos\u00e9 Saramago/Pilar del R\u00edo",
+    "average_rating": 4.0,
+    "bookID": 2543,
+    "isbn": 9587043642,
+    "isbn13": 9789587043648,
+    "language_code": "spa",
+    "  num_pages": 274,
+    "publication_date": "12/1/2005",
+    "publisher": "Alfaguara",
+    "quantity": 55,
+    "ratings_count": 2862,
+    "text_reviews_count": 306,
+    "title": "Las intermitencias de la muerte"
+    
+}
+
+###
+DELETE {{url}}delete_book/2543
+
+### members ####
+
+###
+POST {{url}}add_member
+content-type: application/json
+
+
+{
+    "id": 0980,
+    "name": "new user",
+    "points": 25,
+    "rentedBooks": "9587,0436,8542"
+}
