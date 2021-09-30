@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-banner class="bg-white text-secondary" style="height: 75vh">
+    <q-banner class="bg-white text-secondary" style="height: 55vh">
       <q-item v-ripple class="text-dark">
         <q-item-section>Book ID</q-item-section>
         <q-item-section>Title</q-item-section>
@@ -57,39 +57,32 @@
       ><BookInfoModal :book="bookToImport"
     /></q-dialog>
     <q-dialog v-model="showImportDialog" persistent>
-      <q-card class="my-card">
-        <q-card-section>
-          <q-input v-model="quantity" type="number" label="Quantity" min="0" />
-        </q-card-section>
-        <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Import" v-close-popup @click="handelImport" />
-          <q-btn flat label="Cancel" v-close-popup />
-        </q-card-actions>
-      </q-card>
+      <ImportDialog @importBook="handelImport" />
     </q-dialog>
   </div>
 </template>
 
 <script>
 import BookInfoModal from "../components/BookInfoModal.vue";
-import { getAllData, addBook } from "../functions/fetchers";
+import ImportDialog from "../components/modals/ImportDialog.vue";
+import { getAllData, addData } from "../functions/fetchers";
 export default {
   name: "General Store",
-  components: { BookInfoModal },
+  components: { BookInfoModal, ImportDialog },
   data() {
     return {
       booksArray: [],
       bookToImport: {},
       showMoreDialog: false,
       showImportDialog: false,
-      quantity: 1,
+
       startIndex: 0,
       endIndex: 5,
     };
   },
   methods: {
     getAllData,
-    addBook,
+    addData,
     moreClick(book) {
       this.showMoreDialog = true;
       this.bookToImport = book;
@@ -98,11 +91,11 @@ export default {
       this.showImportDialog = true;
       this.bookToImport = book;
     },
-    async handelImport() {
-      this.bookToImport.quantity = this.quantity;
+    async handelImport(quantity) {
+      this.bookToImport.quantity = quantity;
       this.bookToImport.rented = "no";
 
-      await this.addBook("http://localhost:5000/add_book", this.bookToImport);
+      await this.addData("http://localhost:5000/add_book", this.bookToImport);
 
       this.$q.notify({
         message: `Book ID: ${this.bookToImport.bookID} imported`,
