@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS
-import datetime
+
 import os
 
 app = Flask(__name__)
@@ -17,90 +17,7 @@ db = SQLAlchemy(app)
 # Init ma
 ma = Marshmallow(app)
 
-### articles section ###
-
-
-class Articles(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100))
-    body = db.Column(db.Text())
-    date = db.Column(db.DateTime, default=datetime.datetime.now)
-
-    def __init__(self, title, body):
-        self.title = title
-        self.body = body
-
-
-class ArticleSchema(ma.Schema):
-    class Meta:
-        fields = ('id', 'title', 'body', 'date')
-
-
-article_schema = ArticleSchema()
-articles_schema = ArticleSchema(many=True)
-
-# get all articles
-
-
-@app.route('/get', methods=['GET'])
-def get_articles():
-    all_articles = Articles.query.all()
-    result = articles_schema.dump(all_articles)
-    return jsonify(result)
-
-
-# get single article by id
-
-
-@app.route('/get/<id>/', methods=['GET'])
-def get_article(id):
-    article = Articles.query.get(id)
-    return article_schema.jsonify(article)
-
-
-# add an article
-
-
-@app.route('/add', methods=['POST'])
-def add_article():
-    title = request.json['title']
-    body = request.json['body']
-
-    articles = Articles(title, body)
-
-    db.session.add(articles)
-    db.session.commit()
-    return article_schema.jsonify(articles)
-
-
-# update an article
-
-
-@app.route('/update/<id>/', methods=['PUT'])
-def update_article(id):
-    article = Articles.query.get(id)
-
-    article.title = request.json['title']
-    article.body = request.json['body']
-
-    db.session.commit()
-    return article_schema.jsonify(article)
-
-
-# delete an article
-
-
-@app.route('/delete/<id>/', methods=['DELETE'])
-def delete_article(id):
-    article = Articles.query.get(id)
-    db.session.delete(article)
-    db.session.commit()
-    return article_schema.jsonify(article)
-
-
-#### end section ####
-
-### books section ####
+### members section ####
 
 
 class Member(db.Model):
@@ -161,8 +78,6 @@ def getMember(id):
 def editMember(id):
     member = Member.query.get(id)
 
-    member.id = request.json['id']
-    member.name = request.json['name']
     member.points = request.json['points']
     member.rentedBooks = request.json['rentedBooks']
 
@@ -268,18 +183,6 @@ def get_books():
 @app.route('/update_book/<id>', methods=['PUT'])
 def update_book(id):
     book = Books.query.get(id)
-    """ book.bookID = request.json['bookID']
-    book.title = request.json['title']
-    book.authors = request.json['authors']
-    book.average_rating = request.json['average_rating']
-    book.isbn = request.json['isbn']
-    book.isbn13 = request.json['isbn13']
-    book.language_code = request.json['language_code']
-    book.num_pages = request.json['  num_pages']
-    book.ratings_count = request.json['ratings_count']
-    book.text_reviews_count = request.json['text_reviews_count']
-    book.publication_date = request.json['publication_date']
-    book.publisher = request.json['publisher'] """
     book.quantity = request.json['quantity']
     book.rented = request.json['rented']
 
